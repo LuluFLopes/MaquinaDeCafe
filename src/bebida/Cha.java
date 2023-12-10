@@ -17,8 +17,19 @@ public class Cha extends Bebida {
     }
 
     @Override
-    public void iniciarPreparacao() {
+    public void iniciarPreparacao(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        removerPreenchimento(ingredientes, nivelSelecionado);
+        executarPreparacao();
+    }
 
+    private void removerPreenchimento(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        ingredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.CHA_DE_LIMAO))
+                .forEach(Ingrediente::removerQuantidade);
+
+        ingredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.ACUCAR))
+                .forEach(ingrediente -> ingrediente.removerQuantidade(nivelSelecionado));
     }
 
     @Override

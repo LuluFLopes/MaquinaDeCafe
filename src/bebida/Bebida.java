@@ -14,6 +14,10 @@ public abstract class Bebida {
     private TipoBebida tipo;
     private static final String MENSAGEM_IMPRIMIR = "%d. %s - R$ %s";
     protected static final int QUANTIDADE_ZERADA = 0;
+    private static final String MENSAGEM_VALOR_INSUFICIENTE = """
+            O valor para pagamento selecionado não é o suficiente para este pedido.
+            Por favor tente novamente.
+            """;
 
     public Bebida(BigDecimal valor, TipoBebida tipo) {
         this.valor = valor;
@@ -22,6 +26,15 @@ public abstract class Bebida {
 
     public void imprimirOpcoes() {
         System.out.println(format(MENSAGEM_IMPRIMIR, tipo.ordinal() + 1, tipo.getDescricao(), getValor()));
+    }
+
+    public void validarSeValorFoiSuficiente(BigDecimal valorSelecionado) {
+        if (getValor().compareTo(valorSelecionado) > 0) {
+            System.out.println(MENSAGEM_VALOR_INSUFICIENTE);
+            throw new IllegalArgumentException();
+        } else {
+            setValor(getValor().subtract(valorSelecionado));
+        }
     }
 
     public BigDecimal getValor() {
@@ -40,7 +53,7 @@ public abstract class Bebida {
         this.tipo = tipo;
     }
 
-    public abstract void iniciarPreparacao();
+    public abstract void iniciarPreparacao(List<Ingrediente> ingredientes, int nivelSelecionado);
 
     public abstract boolean isSatisfiedBy(TipoBebida tipoBebida);
 

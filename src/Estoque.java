@@ -24,4 +24,12 @@ public class Estoque {
                 new Acucar(100, 0, TipoIngrediente.ACUCAR)
         );
     }
+
+    public static Acucar buscarAcucar() {
+        return listaIngredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.ACUCAR))
+                .findAny()
+                .map(ingrediente -> (Acucar) ingrediente)
+                .orElseThrow();
+    }
 }

@@ -17,8 +17,15 @@ public class AguaQuente extends Bebida {
     }
 
     @Override
-    public void iniciarPreparacao() {
+    public void iniciarPreparacao(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        removerIngredientes(ingredientes);
+        executarPreparacao();
+    }
 
+    private void removerIngredientes(List<Ingrediente> ingredientes) {
+        ingredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.COPO))
+                .forEach(Ingrediente::removerQuantidade);
     }
 
     @Override

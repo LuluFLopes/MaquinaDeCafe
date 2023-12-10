@@ -17,8 +17,9 @@ public class CafeComLeite extends Bebida {
     }
 
     @Override
-    public void iniciarPreparacao() {
-
+    public void iniciarPreparacao(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        removerIngredientes(ingredientes, nivelSelecionado);
+        executarPreparacao();
     }
 
     @Override
@@ -53,5 +54,18 @@ public class CafeComLeite extends Bebida {
         System.out.println("Adicionando o leite em pó...");
         Temporizador.temporizador(UM_SEGUNDO);
         System.out.println("Adicionando o açucar...\n");
+    }
+
+    private void removerIngredientes(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        ingredientes.stream()
+                .filter(ingrediente ->
+                        ingrediente.isSatisfiedBy(TipoIngrediente.PO_DE_CAFE)
+                                || ingrediente.isSatisfiedBy(TipoIngrediente.COPO)
+                                || ingrediente.isSatisfiedBy(TipoIngrediente.LEITE_EM_PO))
+                .forEach(Ingrediente::removerQuantidade);
+
+        ingredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.ACUCAR))
+                .forEach(ingrediente -> ingrediente.removerQuantidade(nivelSelecionado));
     }
 }

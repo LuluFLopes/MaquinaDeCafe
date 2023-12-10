@@ -3,15 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="79030022-08d0-4cad-96fc-d5726a847767" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Acucar.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Estoque.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Estoque.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Maquina.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Maquina.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Menu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bebida/AguaQuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/AguaQuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bebida/Bebidas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Bebida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/Bebida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Bebida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bebida/Cafe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Cafe.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bebida/CafeComLeite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/CafeComLeite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bebida/Cappucino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Cappucino.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bebida/Cha.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Cha.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ingrediente/Acucar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingrediente/Acucar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ingrediente/Ingrediente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingrediente/Ingrediente.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +104,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/lucme/OneDrive/Área de Trabalho/MaquinaDeCafe&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lucme/OneDrive/Área de Trabalho/Maquina-de-cafe&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -140,7 +143,8 @@
       <option name="presentableId" value="Default" />
       <updated>1552332685265</updated>
       <workItem from="1702177036731" duration="58000" />
-      <workItem from="1702215493356" duration="7688000" />
+      <workItem from="1702215493356" duration="13317000" />
+      <workItem from="1702247307574" duration="2671000" />
     </task>
     <servers />
   </component>

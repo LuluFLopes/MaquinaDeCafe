@@ -62,4 +62,20 @@ public abstract class Ingrediente {
     public abstract void alterarQuantidade(int novaQuantidade);
 
     public abstract boolean isSatisfiedBy(TipoIngrediente tipo);
+
+    public void removerQuantidade(int... quantidade) {
+        if (quantidade.length > 0) {
+            setQuantidadeAtual(getQuantidadeAtual() - quantidade[0]);
+        } else {
+            setQuantidadeAtual(getQuantidadeAtual() - 1);
+        }
+    }
+
+    public void adicionarQuantidade(int... quantidade) {
+        if (quantidade.length > 0) {
+            setQuantidadeAtual(getQuantidadeAtual() + quantidade[0]);
+        } else {
+            setQuantidadeAtual(getQuantidadeAtual() + 1);
+        }
+    }
 }

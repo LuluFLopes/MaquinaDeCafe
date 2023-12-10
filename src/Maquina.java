@@ -1,16 +1,19 @@
 import bebida.Bebida;
 import enumerador.TipoBebida;
 import enumerador.TipoIngrediente;
+import ingrediente.Acucar;
 import ingrediente.Ingrediente;
+import util.Temporizador;
 
+import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Maquina {
 
     Scanner scanner = new Scanner(System.in);
-    private int numeroMaximoOpcoesDeCobranca = 4;
-    private int numeroMinimoOpcoesDeCobranca = 1;
+    private static final int PRIMEIRA_OPCAO_VALOR = 1;
+    private static final int ULTIMA_OPCAO_VALOR = 4;
     private static final int ABRIR_COMPARTIMENTO = 1;
     private static final int FECHAR_COMPARTIMENTO = 1;
     private static final int LIGAR_MAQUINA = 2;
@@ -125,7 +128,8 @@ public class Maquina {
                 .findAny()
                 .ifPresentOrElse(this::imprimirSeTemEstoque, this::imprimirSeNaoTemEstoque);
 
-        selecionarNivelAcucar(opcaoSelecionada, numeroPedido);
+        int opcaoSelecionada = scanner.nextInt();
+        selecionarNivelAcucar(opcaoSelecionada, tipoBebida);
     }
 
     private void imprimirSeSelecionarInvalido() {
@@ -135,8 +139,7 @@ public class Maquina {
 
     private void imprimirSeNaoTemEstoque() {
         Display.mostraMensagemEstoqueInsuficiente();
-        Display.desligandoMaquina();
-        maquinaDesligada();
+        desligarMaquina();
     }
 
     private void imprimirSeTemEstoque(Bebida bebida) {
@@ -144,181 +147,86 @@ public class Maquina {
         Display.mostraPerguntaDeConfirmacaoDoPedido();
     }
 
-    public void selecionarNivelAcucar(int opcaoSelecionada, int numeroDoPedido) {
+    public void selecionarNivelAcucar(int opcaoSelecionada, TipoBebida tipoBebida) {
+        Acucar acucar = Estoque.buscarAcucar();
 
-        switch (opcaoSelecionada) {
-
-            case 1:
-                System.out.println();
-                System.out.println("Por favor selecione o nível de Açucar, de "
-                        + acucar.getNivelAcucarMinimo() + " a " + acucar.getNivelAcucarMaximo());
-                System.out.println();
-                break;
-
-            case 2:
-                pedirNumeroDoPedido();
-                break;
-            default:
-                pedirNumeroDoPedido();
-                break;
-        }
-
-        int nivelAcucarSelecionado = scanner.nextInt();
-        if (acucar.getQuantidadeAtualAcucar() > 1 * nivelAcucarSelecionado) {
-            acucar.selecionarNivelAcucar(nivelAcucarSelecionado, numeroDoPedido);
-            opcoesCobrarPedido(numeroDoPedido, nivelAcucarSelecionado);
-        } else {
-            Display.mostraMensagemEstoqueInsuficiente();
-            Display.desligandoMaquina();
-            maquinaDesligada();
-        }
-    }
-
-    public void opcoesCobrarPedido(int numeroDoPedido, int nivelAcucarSelecionado) {
-        Display.mostraOpcoesParaCobrarPedido();
-        int dinheiro = scanner.nextInt();
-        cobrarPedido(dinheiro, numeroDoPedido, nivelAcucarSelecionado);
-    }
-
-    public void cobrarPedido(int dinheiro, int numeroPedido, int nivelAcucarSelecionado) {
-
-        if (dinheiro <= numeroMaximoOpcoesDeCobranca && dinheiro >= numeroMinimoOpcoesDeCobranca) {
-            switch (dinheiro) {
-                case 1:
-                    if (numeroPedido == 2 || numeroPedido == 3) {
-                        System.out.println();
-                        System.out.println("O valor para pagamento selecionado não é o suficiente para este pedido.");
-                        System.out.println("Por favor tente novamente.");
-                        pedirNumeroDoPedido();
-                    } else if (numeroPedido == 5) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 1.00");
-                    }
-                    break;
-
-                case 2:
-                    if (numeroPedido == 1 || numeroPedido == 4) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 1.00");
-                    } else if (numeroPedido == 5) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 2.00");
-                    } else if (numeroPedido == 2) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 0.50");
-                    }
-                    break;
-
-                case 3:
-                    if (numeroPedido == 1 || numeroPedido == 4) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 4.00");
-                    } else if (numeroPedido == 5) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 5.00");
-                    } else if (numeroPedido == 2) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 3.50");
-                    } else if (numeroPedido == 3) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 3.00");
-                    }
-                    break;
-
-                case 4:
-                    if (numeroPedido == 1 || numeroPedido == 4) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 9.00");
-                    } else if (numeroPedido == 5) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 10.00");
-                    } else if (numeroPedido == 2) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 8.50");
-                    } else if (numeroPedido == 3) {
-                        System.out.println();
-                        System.out.println("Seu troco é: R$ 8.00");
-                    }
-                    break;
+        if (opcaoSelecionada == 1) {
+            imprimirOpcoesNivelAcucar(acucar);
+            int nivelSelecionado = scanner.nextInt();
+            if (acucar.getQuantidadeAtual() > 1 * nivelSelecionado) {
+                acucar.selecionarNivelAcucar(nivelSelecionado, tipoBebida);
+                selecionarOpcaoCobranca(tipoBebida, nivelSelecionado);
+            } else {
+                imprimirSeNaoTemEstoque();
             }
         } else {
-            System.out.println();
-            System.out.println("Forma de pagamento inválida!");
-            System.out.println("Por favor, tente novamente.");
             pedirNumeroDoPedido();
         }
-
-        preparaPedido(numeroPedido, nivelAcucarSelecionado);
     }
 
-    public void preparaPedido(int numeroPedido, int nivelAcucarSelecionado) {
+    private void imprimirOpcoesNivelAcucar(Acucar acucar) {
+        System.out.println("\nPor favor selecione o nível de Açucar, de " + acucar.getNivelMaximo() + " a " + acucar.getNivelMinimo() + "\n");
+    }
 
-        switch (numeroPedido) {
+    public void selecionarOpcaoCobranca(TipoBebida tipoBebida, int nivelSelecionado) {
+        Display.mostraOpcoesParaCobrarPedido();
+        int valorInserido = scanner.nextInt();
+        cobrarPedido(valorInserido, tipoBebida, nivelSelecionado);
+    }
 
-            case 2:
-                Display.mostraAgradecimentoParaPrepararPedido();
-                estoque.setQuantidadeAtualPoDeCafe(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualLeiteEmPo(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
-                acucar.setQuantidadeAtualAcucar(receita.consumoDeIngrediente * nivelAcucarSelecionado);
-                receita.receitaDeCafeComLeite();
-                entregaPedido();
-                break;
+    public void cobrarPedido(int valorSelecionado, TipoBebida tipoBebida, int nivelSelecionado) {
+        Bebida bebidaAtual = Menu.listaBebidas.stream()
+                .filter(bebida -> bebida.isSatisfiedBy(tipoBebida))
+                .findAny()
+                .orElseThrow();
 
-            case 3:
-                Display.mostraAgradecimentoParaPrepararPedido();
-                estoque.setQuantidadeAtualPoDeCafe(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualLeiteEmPo(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualChocolate(receita.consumoDeIngrediente);
-                acucar.setQuantidadeAtualAcucar(receita.consumoDeIngrediente * nivelAcucarSelecionado);
-
-                receita.receitaDeCappucino();
-                entregaPedido();
-                break;
-
-            case 4:
-                Display.mostraAgradecimentoParaPrepararPedido();
-                estoque.setQuantidadeAtualChaDeLimao(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
-                acucar.setQuantidadeAtualAcucar(receita.consumoDeIngrediente * nivelAcucarSelecionado);
-
-                receita.receitaDeCha();
-                entregaPedido();
-                break;
-
-            case 5:
-                Display.mostraAgradecimentoParaPrepararPedido();
-                estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
-
-                receita.receitaDeAguaQuente();
-                entregaPedido();
-                break;
-
-            default:
-                Display.mostraAgradecimentoParaPrepararPedido();
-                estoque.setQuantidadeAtualPoDeCafe(receita.consumoDeIngrediente);
-                estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
-                acucar.setQuantidadeAtualAcucar(receita.consumoDeIngrediente * nivelAcucarSelecionado);
-
-                receita.receitaDeCafe();
-                entregaPedido();
-                break;
+        if (validaSeValorSelecionadoEValido(valorSelecionado)) {
+            try {
+                switch (valorSelecionado) {
+                    case 1 -> bebidaAtual.validarSeValorFoiSuficiente(new BigDecimal("1.0"));
+                    case 2 -> bebidaAtual.validarSeValorFoiSuficiente(new BigDecimal("2.0"));
+                    case 3 -> bebidaAtual.validarSeValorFoiSuficiente(new BigDecimal("5.0"));
+                    case 4 -> bebidaAtual.validarSeValorFoiSuficiente(new BigDecimal("10.0"));
+                }
+            } catch (Exception ex) {
+                selecionarOpcaoCobranca(tipoBebida, nivelSelecionado);
+            }
+        } else {
+            imprimirFormaDePagamentoInvalida();
+            selecionarOpcaoCobranca(tipoBebida, nivelSelecionado);
         }
+
+        prepararPedido(bebidaAtual, nivelSelecionado);
+    }
+
+    private void imprimirFormaDePagamentoInvalida() {
+        System.out.println("\nForma de pagamento inválida!");
+        System.out.println("Por favor, tente novamente.\n");
+    }
+
+    private boolean validaSeValorSelecionadoEValido(int valorSelecionado) {
+        return valorSelecionado >= PRIMEIRA_OPCAO_VALOR && valorSelecionado <= ULTIMA_OPCAO_VALOR;
+    }
+
+    public void prepararPedido(Bebida bebida, int nivelSelecionado) {
+        bebida.iniciarPreparacao(Estoque.listaDeIngredientes(), nivelSelecionado);
+        imprimirFinalizacaoDoPedido();
+    }
+
+    private void imprimirFinalizacaoDoPedido() {
+        Display.mostraAgradecimentoParaPrepararPedido();
+        entregaPedido();
     }
 
     public void entregaPedido() {
-        try {
-            System.out.println();
-            System.out.println("Seu pedido está pronto!");
-            Thread.sleep(2000);
-            System.out.println("Obrigado, volte sempre!");
-        } catch (InterruptedException ex) {
-            System.out.println(ex);
-        }
+        imprimirMensagemPedidoPronto();
+        desligarMaquina();
+    }
 
-        Display.desligandoMaquina();
-        maquinaDesligada();
+    private void imprimirMensagemPedidoPronto() {
+        System.out.println("\nSeu pedido está pronto!");
+        Temporizador.temporizador(2);
+        System.out.println("Obrigado, volte sempre!");
     }
 
     private void imprimirOpcaoSelecionada(TipoIngrediente tipo) {
@@ -330,8 +238,12 @@ public class Maquina {
         pedirNumeroDoPedido();
     }
 
-    public static void main(String[] args) {
+    private void desligarMaquina() {
+        Display.desligandoMaquina();
+        maquinaDesligada();
+    }
 
+    public static void main(String[] args) {
         Maquina maquina = new Maquina();
         maquina.maquinaDesligada();
     }

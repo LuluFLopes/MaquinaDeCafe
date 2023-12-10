@@ -1,5 +1,6 @@
 package ingrediente;
 
+import enumerador.TipoBebida;
 import enumerador.TipoIngrediente;
 
 public class Acucar extends Ingrediente {
@@ -37,5 +38,16 @@ public class Acucar extends Ingrediente {
 
     public int getNivelMinimo() {
         return nivelMinimo;
+    }
+
+    public void selecionarNivelAcucar(int nivelSelecionado, TipoBebida tipoBebida) {
+        if (nivelSelecionado <= getNivelMaximo() && nivelSelecionado >= getNivelMinimo() && tipoBebida != TipoBebida.AGUA_QUENTE) {
+            System.out.println("\nO nível de açucar selecionado foi: " + nivelSelecionado);
+        } else if (tipoBebida == TipoBebida.AGUA_QUENTE) {
+            System.out.println("\nNa opção água quente não há açucar.");
+        } else {
+            System.out.println("\nNível de açucar inválido.");
+            System.out.println("O Nível de açucar será o padrão: " + getNivelPadrao());
+        }
     }
 }

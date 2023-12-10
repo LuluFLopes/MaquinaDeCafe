@@ -17,8 +17,9 @@ public class Cafe extends Bebida {
     }
 
     @Override
-    public void iniciarPreparacao() {
-
+    public void iniciarPreparacao(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        removerIngredientes(ingredientes, nivelSelecionado);
+        executarPreparacao();
     }
 
     @Override
@@ -49,4 +50,15 @@ public class Cafe extends Bebida {
         Temporizador.temporizador(UM_SEGUNDO);
         System.out.println("Adicionando o açucar...");
     }
+
+    private void removerIngredientes(List<Ingrediente> ingredientes, int nivelSelecionado) {
+        ingredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.PO_DE_CAFE) || ingrediente.isSatisfiedBy(TipoIngrediente.COPO))
+                .forEach(Ingrediente::removerQuantidade);
+
+        ingredientes.stream()
+                .filter(ingrediente -> ingrediente.isSatisfiedBy(TipoIngrediente.ACUCAR))
+                .forEach(ingrediente -> ingrediente.removerQuantidade(nivelSelecionado));
+    }
+
 }
