@@ -18,6 +18,11 @@ public class Maquina {
     private static final int FECHAR_COMPARTIMENTO = 1;
     private static final int LIGAR_MAQUINA = 2;
 
+    public static void main(String[] args) {
+        Maquina maquina = new Maquina();
+        maquina.maquinaDesligada();
+    }
+
     public void quantidadeAtualEstoque() {
         Estoque.listaDeIngredientes()
                 .forEach(Ingrediente::imprimirQuantidadeEmEstoque);
@@ -132,21 +137,6 @@ public class Maquina {
         selecionarNivelAcucar(opcaoSelecionada, tipoBebida);
     }
 
-    private void imprimirSeSelecionarInvalido() {
-        System.out.println("\nVocê não selecionou nenhuma opção válida, portanto a opção padrão é: " + TipoBebida.CAFE.getDescricao());
-        Display.mostraPerguntaDeConfirmacaoDoPedido();
-    }
-
-    private void imprimirSeNaoTemEstoque() {
-        Display.mostraMensagemEstoqueInsuficiente();
-        desligarMaquina();
-    }
-
-    private void imprimirSeTemEstoque(Bebida bebida) {
-        System.out.println("\nVocê selecionou: " + bebida.getTipo().getDescricao());
-        Display.mostraPerguntaDeConfirmacaoDoPedido();
-    }
-
     public void selecionarNivelAcucar(int opcaoSelecionada, TipoBebida tipoBebida) {
         Acucar acucar = Estoque.buscarAcucar();
 
@@ -162,10 +152,6 @@ public class Maquina {
         } else {
             pedirNumeroDoPedido();
         }
-    }
-
-    private void imprimirOpcoesNivelAcucar(Acucar acucar) {
-        System.out.println("\nPor favor selecione o nível de Açucar, de " + acucar.getNivelMaximo() + " a " + acucar.getNivelMinimo() + "\n");
     }
 
     public void selecionarOpcaoCobranca(TipoBebida tipoBebida, int nivelSelecionado) {
@@ -199,6 +185,20 @@ public class Maquina {
         prepararPedido(bebidaAtual, nivelSelecionado);
     }
 
+    public void prepararPedido(Bebida bebida, int nivelSelecionado) {
+        bebida.iniciarPreparacao(Estoque.listaDeIngredientes(), nivelSelecionado);
+        imprimirFinalizacaoDoPedido();
+    }
+
+    public void entregaPedido() {
+        imprimirMensagemPedidoPronto();
+        desligarMaquina();
+    }
+
+    private void imprimirOpcoesNivelAcucar(Acucar acucar) {
+        System.out.println("\nPor favor selecione o nível de Açucar, de " + acucar.getNivelMaximo() + " a " + acucar.getNivelMinimo() + "\n");
+    }
+
     private void imprimirFormaDePagamentoInvalida() {
         System.out.println("\nForma de pagamento inválida!");
         System.out.println("Por favor, tente novamente.\n");
@@ -208,19 +208,9 @@ public class Maquina {
         return valorSelecionado >= PRIMEIRA_OPCAO_VALOR && valorSelecionado <= ULTIMA_OPCAO_VALOR;
     }
 
-    public void prepararPedido(Bebida bebida, int nivelSelecionado) {
-        bebida.iniciarPreparacao(Estoque.listaDeIngredientes(), nivelSelecionado);
-        imprimirFinalizacaoDoPedido();
-    }
-
     private void imprimirFinalizacaoDoPedido() {
         Display.mostraAgradecimentoParaPrepararPedido();
         entregaPedido();
-    }
-
-    public void entregaPedido() {
-        imprimirMensagemPedidoPronto();
-        desligarMaquina();
     }
 
     private void imprimirMensagemPedidoPronto() {
@@ -243,8 +233,18 @@ public class Maquina {
         maquinaDesligada();
     }
 
-    public static void main(String[] args) {
-        Maquina maquina = new Maquina();
-        maquina.maquinaDesligada();
+    private void imprimirSeSelecionarInvalido() {
+        System.out.println("\nVocê não selecionou nenhuma opção válida, portanto a opção padrão é: " + TipoBebida.CAFE.getDescricao());
+        Display.mostraPerguntaDeConfirmacaoDoPedido();
+    }
+
+    private void imprimirSeNaoTemEstoque() {
+        Display.mostraMensagemEstoqueInsuficiente();
+        desligarMaquina();
+    }
+
+    private void imprimirSeTemEstoque(Bebida bebida) {
+        System.out.println("\nVocê selecionou: " + bebida.getTipo().getDescricao());
+        Display.mostraPerguntaDeConfirmacaoDoPedido();
     }
 }
