@@ -1,3 +1,5 @@
+import bebida.Bebida;
+import enumerador.TipoBebida;
 import enumerador.TipoIngrediente;
 import ingrediente.Ingrediente;
 
@@ -6,8 +8,6 @@ import java.util.Scanner;
 
 public class Maquina {
 
-    Menu menu = new Menu();
-    Display display = new Display();
     Scanner scanner = new Scanner(System.in);
     private int numeroMaximoOpcoesDeCobranca = 4;
     private int numeroMinimoOpcoesDeCobranca = 1;
@@ -63,7 +63,7 @@ public class Maquina {
     }
 
     public void maquinaDesligada() {
-        display.mostraMaquinaDesligada();
+        Display.mostraMaquinaDesligada();
         quantidadeAtualEstoque();
 
         try {
@@ -85,7 +85,7 @@ public class Maquina {
     }
 
     public void continuarAbastecendoOuSair() {
-        display.exibirMensagemParaContinuarOuSair();
+        Display.exibirMensagemParaContinuarOuSair();
 
         int opcaoSelecionada = scanner.nextInt();
 
@@ -97,101 +97,54 @@ public class Maquina {
     }
 
     public void pedirNumeroDoPedido() {
-        display.mostraPedirNumeroDoPedido();
+        Menu.listaBebidas.forEach(Bebida::imprimirOpcoes);
+        Display.mostraPedirNumeroDoPedido();
+        int opcaoSelecionada = scanner.nextInt();
+        TipoBebida tipoBebida = null;
 
-        int numeroDoPedido = scanner.nextInt();
-        selecionarPedido(numeroDoPedido);
-    }
-
-    public void selecionarPedido(int numeroPedido) {
-        switch (numeroPedido) {
-            case 1:
-                if (estoque.getQuantidadeAtualPoDeCafe() != 0
-                        && estoque.getQuantidadeAtualCopo() != 0) {
-                    System.out.println();
-                    System.out.println("Você selecionou: " + menu.getCafe());
-                    display.mostraPerguntaDeConfirmacaoDoPedido();
-                } else {
-                    display.mostraMensagemEstoqueInsuficiente();
-                    display.desligandoMaquina();
-                    maquinaDesligada();
-                }
-                break;
-
-            case 2:
-                if (estoque.getQuantidadeAtualPoDeCafe() != 0
-                        && estoque.getQuantidadeAtualLeiteEmPo() != 0
-                        && estoque.getQuantidadeAtualCopo() != 0) {
-                    System.out.println();
-                    System.out.println("Você selecionou: " + menu.getCafeComLeite());
-                    display.mostraPerguntaDeConfirmacaoDoPedido();
-                } else {
-                    display.mostraMensagemEstoqueInsuficiente();
-                    display.desligandoMaquina();
-                    maquinaDesligada();
-                }
-                break;
-
-            case 3:
-                if (estoque.getQuantidadeAtualPoDeCafe() != 0
-                        && estoque.getQuantidadeAtualLeiteEmPo() != 0
-                        && estoque.getQuantidadeAtualCopo() != 0
-                        && estoque.getQuantidadeAtualChocolate() != 0) {
-
-                    System.out.println();
-                    System.out.println("Você selecionou: " + menu.getCapuccino());
-                    display.mostraPerguntaDeConfirmacaoDoPedido();
-                } else {
-                    display.mostraMensagemEstoqueInsuficiente();
-                    display.desligandoMaquina();
-                    maquinaDesligada();
-                }
-                break;
-            case 4:
-                if (estoque.getQuantidadeAtualChaDeLimao() != 0
-                        && estoque.getQuantidadeAtualCopo() != 0) {
-                    System.out.println();
-                    System.out.println("Você selecionou: " + menu.getCha());
-                    display.mostraPerguntaDeConfirmacaoDoPedido();
-                } else {
-                    display.mostraMensagemEstoqueInsuficiente();
-                    display.desligandoMaquina();
-                    maquinaDesligada();
-                }
-                break;
-
-            case 5:
-                if (estoque.getQuantidadeAtualCopo() != 0) {
-                    System.out.println();
-                    System.out.println("Você selecionou: " + menu.getAguaQuente());
-                    display.mostraPerguntaDeConfirmacaoDoPedido();
-                } else {
-                    display.mostraMensagemEstoqueInsuficiente();
-                    display.desligandoMaquina();
-                    maquinaDesligada();
-                }
-                break;
-
-            default:
-                if (estoque.getQuantidadeAtualPoDeCafe() != 0
-                        && estoque.getQuantidadeAtualCopo() != 0) {
-                    System.out.println();
-                    System.out.println("Você não selecionou nenhuma opção válida, portanto a opção padrão é: "
-                            + menu.getCafe());
-                    display.mostraPerguntaDeConfirmacaoDoPedido();
-                } else {
-                    display.mostraMensagemEstoqueInsuficiente();
-                    display.desligandoMaquina();
-                    maquinaDesligada();
-                }
-                break;
+        switch (opcaoSelecionada) {
+            case 1 -> tipoBebida = TipoBebida.CAFE;
+            case 2 -> tipoBebida = TipoBebida.CAFE_COM_LEITE;
+            case 3 -> tipoBebida = TipoBebida.CAPUCCINO;
+            case 4 -> tipoBebida = TipoBebida.CHA;
+            case 5 -> tipoBebida = TipoBebida.AGUA_QUENTE;
         }
 
-        int opcaoSelecionada = scanner.nextInt();
-        confirmarPedido(opcaoSelecionada, numeroPedido);
+        if (tipoBebida == null) {
+            imprimirSeSelecionarInvalido();
+            tipoBebida = TipoBebida.CAFE;
+        }
+
+        selecionarPedido(tipoBebida);
     }
 
-    public void confirmarPedido(int opcaoSelecionada, int numeroDoPedido) {
+    public void selecionarPedido(TipoBebida tipoBebida) {
+        Menu.listaBebidas.stream()
+                .filter(bebida -> bebida.isSatisfiedBy(tipoBebida))
+                .filter(bebida -> bebida.verificarSeTemEstoque(Estoque.listaDeIngredientes()))
+                .findAny()
+                .ifPresentOrElse(this::imprimirSeTemEstoque, this::imprimirSeNaoTemEstoque);
+
+        selecionarNivelAcucar(opcaoSelecionada, numeroPedido);
+    }
+
+    private void imprimirSeSelecionarInvalido() {
+        System.out.println("\nVocê não selecionou nenhuma opção válida, portanto a opção padrão é: " + TipoBebida.CAFE.getDescricao());
+        Display.mostraPerguntaDeConfirmacaoDoPedido();
+    }
+
+    private void imprimirSeNaoTemEstoque() {
+        Display.mostraMensagemEstoqueInsuficiente();
+        Display.desligandoMaquina();
+        maquinaDesligada();
+    }
+
+    private void imprimirSeTemEstoque(Bebida bebida) {
+        System.out.println("\nVocê selecionou: " + bebida.getTipo().getDescricao());
+        Display.mostraPerguntaDeConfirmacaoDoPedido();
+    }
+
+    public void selecionarNivelAcucar(int opcaoSelecionada, int numeroDoPedido) {
 
         switch (opcaoSelecionada) {
 
@@ -203,12 +156,9 @@ public class Maquina {
                 break;
 
             case 2:
-                menu.mostraOpcoes();
                 pedirNumeroDoPedido();
                 break;
-
             default:
-                menu.mostraOpcoes();
                 pedirNumeroDoPedido();
                 break;
         }
@@ -218,14 +168,14 @@ public class Maquina {
             acucar.selecionarNivelAcucar(nivelAcucarSelecionado, numeroDoPedido);
             opcoesCobrarPedido(numeroDoPedido, nivelAcucarSelecionado);
         } else {
-            display.mostraMensagemEstoqueInsuficiente();
-            display.desligandoMaquina();
+            Display.mostraMensagemEstoqueInsuficiente();
+            Display.desligandoMaquina();
             maquinaDesligada();
         }
     }
 
     public void opcoesCobrarPedido(int numeroDoPedido, int nivelAcucarSelecionado) {
-        display.mostraOpcoesParaCobrarPedido();
+        Display.mostraOpcoesParaCobrarPedido();
         int dinheiro = scanner.nextInt();
         cobrarPedido(dinheiro, numeroDoPedido, nivelAcucarSelecionado);
     }
@@ -239,7 +189,6 @@ public class Maquina {
                         System.out.println();
                         System.out.println("O valor para pagamento selecionado não é o suficiente para este pedido.");
                         System.out.println("Por favor tente novamente.");
-                        menu.mostraOpcoes();
                         pedirNumeroDoPedido();
                     } else if (numeroPedido == 5) {
                         System.out.println();
@@ -296,7 +245,6 @@ public class Maquina {
             System.out.println();
             System.out.println("Forma de pagamento inválida!");
             System.out.println("Por favor, tente novamente.");
-            menu.mostraOpcoes();
             pedirNumeroDoPedido();
         }
 
@@ -308,7 +256,7 @@ public class Maquina {
         switch (numeroPedido) {
 
             case 2:
-                display.mostraAgradecimentoParaPrepararPedido();
+                Display.mostraAgradecimentoParaPrepararPedido();
                 estoque.setQuantidadeAtualPoDeCafe(receita.consumoDeIngrediente);
                 estoque.setQuantidadeAtualLeiteEmPo(receita.consumoDeIngrediente);
                 estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
@@ -318,7 +266,7 @@ public class Maquina {
                 break;
 
             case 3:
-                display.mostraAgradecimentoParaPrepararPedido();
+                Display.mostraAgradecimentoParaPrepararPedido();
                 estoque.setQuantidadeAtualPoDeCafe(receita.consumoDeIngrediente);
                 estoque.setQuantidadeAtualLeiteEmPo(receita.consumoDeIngrediente);
                 estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
@@ -330,7 +278,7 @@ public class Maquina {
                 break;
 
             case 4:
-                display.mostraAgradecimentoParaPrepararPedido();
+                Display.mostraAgradecimentoParaPrepararPedido();
                 estoque.setQuantidadeAtualChaDeLimao(receita.consumoDeIngrediente);
                 estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
                 acucar.setQuantidadeAtualAcucar(receita.consumoDeIngrediente * nivelAcucarSelecionado);
@@ -340,7 +288,7 @@ public class Maquina {
                 break;
 
             case 5:
-                display.mostraAgradecimentoParaPrepararPedido();
+                Display.mostraAgradecimentoParaPrepararPedido();
                 estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
 
                 receita.receitaDeAguaQuente();
@@ -348,7 +296,7 @@ public class Maquina {
                 break;
 
             default:
-                display.mostraAgradecimentoParaPrepararPedido();
+                Display.mostraAgradecimentoParaPrepararPedido();
                 estoque.setQuantidadeAtualPoDeCafe(receita.consumoDeIngrediente);
                 estoque.setQuantidadeAtualCopo(receita.consumoDeIngrediente);
                 acucar.setQuantidadeAtualAcucar(receita.consumoDeIngrediente * nivelAcucarSelecionado);
@@ -369,7 +317,7 @@ public class Maquina {
             System.out.println(ex);
         }
 
-        display.desligandoMaquina();
+        Display.desligandoMaquina();
         maquinaDesligada();
     }
 
@@ -379,7 +327,6 @@ public class Maquina {
     }
 
     private void inicializarMaquina() {
-        menu.mostraOpcoes();
         pedirNumeroDoPedido();
     }
 

@@ -1,13 +1,16 @@
 package bebida;
 
 import enumerador.TipoBebida;
+import enumerador.TipoIngrediente;
+import ingrediente.Ingrediente;
 import util.Temporizador;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static util.Temporizador.UM_SEGUNDO;
 
-public class CafeComLeite extends Bebidas {
+public class CafeComLeite extends Bebida {
 
     public CafeComLeite(BigDecimal valor, TipoBebida tipo) {
         super(valor, tipo);
@@ -16,6 +19,23 @@ public class CafeComLeite extends Bebidas {
     @Override
     public void iniciarPreparacao() {
 
+    }
+
+    @Override
+    public boolean isSatisfiedBy(TipoBebida tipoBebida) {
+        return TipoBebida.CAFE_COM_LEITE.equals(tipoBebida);
+    }
+
+    @Override
+    public boolean verificarSeTemEstoque(List<Ingrediente> ingredientes) {
+        return !ingredientes.stream()
+                .filter(ingrediente ->
+                        ingrediente.isSatisfiedBy(TipoIngrediente.PO_DE_CAFE)
+                                || ingrediente.isSatisfiedBy(TipoIngrediente.COPO)
+                                || ingrediente.isSatisfiedBy(TipoIngrediente.LEITE_EM_PO))
+                .map(Ingrediente::getQuantidadeAtual)
+                .toList()
+                .contains(QUANTIDADE_ZERADA);
     }
 
     @Override

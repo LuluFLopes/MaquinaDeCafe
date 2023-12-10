@@ -1,12 +1,12 @@
 public class Display {
 
-    public void mostraMensagemEstoqueInsuficiente () {
+    public static void mostraMensagemEstoqueInsuficiente () {
         System.out.println();
         System.out.println("Items no Estoque insuficiente, por favor abasteça a máquina e tente novamente.");
         System.out.println();
     }
 
-    public void mostraMaquinaDesligada () {
+    public static void mostraMaquinaDesligada () {
         System.out.println();
         System.out.println("------Maquina desligada------");
         System.out.println();
@@ -15,7 +15,7 @@ public class Display {
         System.out.println();
     }
 
-    public void desligandoMaquina () {
+    public static void desligandoMaquina () {
         try {
             System.out.println();
             System.out.println("Desligando a Máquina...");
@@ -26,31 +26,30 @@ public class Display {
         }
     }
 
-    public void exibirMensagemParaContinuarOuSair(){
+    public static void exibirMensagemParaContinuarOuSair(){
         System.out.println();
         System.out.println("1. Fechar compartimento");
         System.out.println("2. Continuar abastecendo");
         System.out.println();
     }
 
-    public void mostraPedirNumeroDoPedido () {
-        System.out.println("Digite o número referente ao seu pedido.");
-        System.out.println();
+    public static void mostraPedirNumeroDoPedido () {
+        System.out.println("Digite o número referente ao seu pedido.\n");
     }
 
-    public void mostraPerguntaDeConfirmacaoDoPedido () {
+    public static void mostraPerguntaDeConfirmacaoDoPedido () {
         System.out.println("Confirmar o pedido?");
         System.out.println("1. sim");
         System.out.println("2. não");
     }
 
-    public void mostraAgradecimentoParaPrepararPedido () {
+    public static void mostraAgradecimentoParaPrepararPedido () {
         System.out.println();
         System.out.println("Obrigado, agora iremos preparar o seu pedido");
         System.out.println();
     }
 
-    public void mostraOpcoesParaCobrarPedido () {
+    public static void mostraOpcoesParaCobrarPedido () {
         System.out.println();
         System.out.println("Por favor escolha o valor/moeda para o pagamento.");
         System.out.println("1. " + "R$ 1.00");

@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="79030022-08d0-4cad-96fc-d5726a847767" name="Default Changelist" comment="" />
+    <list default="true" id="79030022-08d0-4cad-96fc-d5726a847767" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Maquina.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Maquina.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/AguaQuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/AguaQuente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/Bebidas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Bebida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/Cafe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Cafe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/CafeComLeite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/CafeComLeite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/Cappucino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Cappucino.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bebida/Cha.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bebida/Cha.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,13 +96,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553269889894" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="restartRequiresConfirmation" value="false" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lucme/OneDrive/Área de Trabalho/MaquinaDeCafe&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RunManager" selected="Application.Maquina">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -125,6 +139,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1552332685265</updated>
+      <workItem from="1702177036731" duration="58000" />
+      <workItem from="1702215493356" duration="7688000" />
     </task>
     <servers />
   </component>
